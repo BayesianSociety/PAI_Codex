@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$BIN_DIR/.." && pwd)"
+SCRIPT_DIR="$ROOT_DIR/scripts"
+
+usage() {
+  cat <<USAGE
+Codex_PAI wrapper
+
+Usage:
+  codex-pai chat [--model MODEL] [--search] [--cd DIR]
+  codex-pai exec "prompt" [--model MODEL] [--search] [--cd DIR]
+  codex-pai start [codex interactive args...]
+  codex-pai status
+  codex-pai help
+USAGE
+}
+
+cmd="${1:-help}"
+if [[ $# -gt 0 ]]; then
+  shift
+fi
+
+case "$cmd" in
+  chat)
+    "$SCRIPT_DIR/session_chat.sh" "$@"
+    ;;
+  exec)
+    if [[ $# -lt 1 ]]; then
+      echo "exec requires a prompt"
+      exit 1
+    fi
+    "$SCRIPT_DIR/session_exec.sh" "$@"
+    ;;
+  start)
+    "$SCRIPT_DIR/preflight.sh"
+    echo "Starting native codex interactive mode (SessionStart/End wrappers only)."
+    sid="$(date +%Y%m%d-%H%M%S)-native"
+    "$SCRIPT_DIR/hooks_session_start.sh" "$sid" "$(pwd)"
+    codex "$@"
+    transcript="$ROOT_DIR/MEMORY/SESSIONS/$sid/transcript.jsonl"
+    touch "$transcript"
+    "$SCRIPT_DIR/hooks_session_end.sh" "$sid" "$transcript"
+    ;;
+  status)
+    "$SCRIPT_DIR/preflight.sh"
+    source "$SCRIPT_DIR/common.sh"
+    pai_root="$PAI_ROOT_DIR"
+    echo "Codex login: OK (web auth)"
+    echo "PAI root: $pai_root"
+    if [[ -f "$ROOT_DIR/MEMORY/STATE/counts.json" ]]; then
+      printf '%b\n' "$(cat "$ROOT_DIR/MEMORY/STATE/counts.json")"
+    else
+      echo "No counts yet. Run at least one session."
+    fi
+    ;;
+  help|--help|-h)
+    usage
+    ;;
+  *)
+    echo "Unknown command: $cmd"
+    usage
+    exit 1
+    ;;
+esac

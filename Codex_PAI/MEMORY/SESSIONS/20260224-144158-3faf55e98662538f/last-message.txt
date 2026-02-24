@@ -1,0 +1,5 @@
+Saved the research report here:
+
+- [REGN_financials_2026-02-24.md](/home/postnl/PAI_Codex/Codex_PAI/Research/REGN_financials_2026-02-24.md)
+
+It includes all 6 requested sections, uses latest available SEC filings/earnings materials, and cites links with dates.

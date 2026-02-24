@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="/home/postnl/PAI_Codex/Codex_PAI"
+AGENT_FILE="$ROOT/agents/Architect.md"
+
+if [[ ! -f "$AGENT_FILE" ]]; then
+  echo "Missing agent file: $AGENT_FILE"
+  exit 1
+fi
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: agent-architect "your task" [--search] [--model MODEL] [--cd DIR]"
+  exit 1
+fi
+
+TASK="$1"
+shift || true
+
+PROMPT=$(cat <<PROMPT_EOF
+Use this agent profile as authoritative behavior:
+
+$(cat "$AGENT_FILE")
+
+Now execute this task:
+$TASK
+PROMPT_EOF
+)
+
+exec "$ROOT/bin/codex-pai" exec "$PROMPT" "$@"

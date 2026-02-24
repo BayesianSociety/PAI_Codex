@@ -1,0 +1,44 @@
+{
+  "name": "Codex_PAI",
+  "version": "1.0.0",
+  "require_web_login": true,
+  "codex": {
+    "sandbox": "workspace-write",
+    "approval": "on-request",
+    "model": "",
+    "search": false
+  },
+  "paths": {
+    "context_files": [
+      "skills/PAI/SKILL.md",
+      "skills/PAI/AISTEERINGRULES.md",
+      "skills/PAI/USER/AISTEERINGRULES.md",
+      "skills/PAI/USER/DAIDENTITY.md"
+    ],
+    "skills_dir": "skills",
+    "hooks_dir": "hooks"
+  },
+  "features": {
+    "session_start": true,
+    "user_prompt_submit": true,
+    "stop": true,
+    "session_end": true,
+    "security_guard": true,
+    "voice_notifications": true,
+    "auto_work_creation": true,
+    "session_auto_name": true,
+    "rating_capture": true,
+    "integrity_check": true
+  },
+  "security": {
+    "block_patterns": [
+      "rm -rf /",
+      "rm -rf ~",
+      "mkfs",
+      "dd if=/dev/zero",
+      "git push --force",
+      "git push -f",
+      "sudo rm -rf"
+    ]
+  }
+}

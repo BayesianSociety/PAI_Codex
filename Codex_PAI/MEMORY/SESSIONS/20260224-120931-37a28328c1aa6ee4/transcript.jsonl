@@ -1,0 +1,3 @@
+{"timestamp":"2026-02-24T11:09:31Z","role":"user","text":"10 - wrapper smoke test"}
+{"timestamp":"2026-02-24T11:09:56Z","role":"system","text":"codex exec failed"}
+{"timestamp":"2026-02-24T11:09:56Z","role":"assistant","text":""}
