@@ -1,0 +1,5 @@
+Running the **Research** workflow in the **Research** skill.
+
+Report saved: [Research/GILD_agent_skill_2026-02-24.md](/home/postnl/PAI_Codex/Codex_PAI/Research/GILD_agent_skill_2026-02-24.md)
+
+It includes all 6 requested deliverables, explicit assumptions, and dated source links (SEC filings + latest earnings release).

@@ -162,6 +162,7 @@ How to confirm it worked:
 - Check output file: `ls -la Research/VRTX_financials_*.md`
 - Check session transcript: `MEMORY/SESSIONS/<session_id>/transcript.jsonl`
 - Check strict skill confirmations: `MEMORY/STATE/skills-used.jsonl`
+- Check strict agent confirmations: `MEMORY/STATE/agents-used.jsonl`
 
 
 
@@ -186,7 +187,16 @@ Audit logs:
 - Strict confirmed skill usage log:
   - `MEMORY/STATE/skills-used.jsonl`
 
-## Test Prompt
+## Agent Usage Logging (Strict)
+When you run via an agent wrapper (`agent-run` or `agent-*`), agent usage is logged to:
+- `MEMORY/STATE/agents-used.jsonl`
+
+Quick check:
+```bash
+tail -n 5 MEMORY/STATE/agents-used.jsonl
+```
+
+## Test Prompt Skill enforced
 • PROMPT=$(cat <<'EOF'
   Use the Research skill workflow to analyze VRTX financials.
 
@@ -210,3 +220,24 @@ Audit logs:
 
   tail -n 5 MEMORY/STATE/skill-contracts.jsonl
   tail -n 5 MEMORY/STATE/skills-used.jsonl
+  
+## Test Prompt Skill and Agent enforced  
+PROMPT=$(cat <<'EOF'
+Use the Research skill workflow to investigate GILD (Gilead Sciences).
+Operate as a CodexResearcher agent: be evidence-first, cite primary sources, and highlight assumptions.
+
+Deliver:
+1) Revenue, operating income, and net income trend (last 8 quarters)
+2) US vs international contribution (or best available geographic proxy)
+3) Free cash flow trend and main drivers
+4) Balance sheet health: cash, debt, lease liabilities
+5) Valuation snapshot: P/E, EV/EBITDA, FCF yield (state caveats)
+6) Key risks and 12-month bull/base/bear scenarios
+
+Use latest filings and earnings materials.
+Cite sources with direct links and dates.
+Save as Research/GILD_agent_skill_$(date +%F).md.
+EOF
+)
+
+  ./bin/agent-codex-researcher "$PROMPT" --search --model gpt-5.3-codex

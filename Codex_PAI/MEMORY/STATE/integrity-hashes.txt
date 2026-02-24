@@ -1,3 +1,3 @@
 626ac08920971e906e921220aba008fb626cc5769af6aea513e291272bdc9167  /home/postnl/PAI_Codex/Codex_PAI/settings.json
-785522e3ec354d27f1d9ecec826f213b643709ec0e85efbfc1ca53e0eca813d2  /home/postnl/PAI_Codex/Codex_PAI/README.md
+508e1c2daad4fcdda0657c240b3bc2ee966efeb617e574357315a29519c02379  /home/postnl/PAI_Codex/Codex_PAI/README.md
 fc35677abce105751f6de6acd99b45fcf82819e9b10993eab45d4962958490df  /home/postnl/PAI_Codex/Codex_PAI/skills/PAI/SKILL.md

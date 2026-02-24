@@ -62,6 +62,11 @@ while true; do
 
   "$SCRIPT_DIR/hooks_user_prompt_submit.sh" "$SESSION_ID" "$prompt" "$TRANSCRIPT_PATH"
 
+  requested_agent="$($SCRIPT_DIR/agent_logger.sh detect "$prompt" || true)"
+  if [[ -n "$requested_agent" ]]; then
+    "$SCRIPT_DIR/agent_logger.sh" log "$SESSION_ID" "$requested_agent" "agent_profile_prompt" "Use this agent profile as authoritative behavior"
+  fi
+
   requested_skill="$($SCRIPT_DIR/skill_enforcer.sh detect "$prompt" || true)"
   contract_block=""
   if [[ -n "$requested_skill" ]]; then
