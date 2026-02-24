@@ -1,0 +1,14 @@
+Created the report at:
+
+- [VRTX_financials_2026-02-24.md](/home/postnl/PAI_Codex/Codex_PAI/Research/VRTX_financials_2026-02-24.md)
+
+It includes:
+- 8-quarter trend for revenue, operating income, and net income
+- U.S. vs international contribution (using available disclosed splits)
+- FCF trend with drivers (from 10-Q cash-flow statements)
+- Balance sheet health (cash, liabilities, lease obligations, leverage view)
+- Valuation snapshot (P/E, EV/EBITDA, FCF yield) with caveats
+- 12-month bull/base/bear scenarios and key risks
+- Source links with filing/publication dates and access date for market multiples
+
+Note: full 8-quarter quarterly FCF cannot be fully reconstructed from the latest Q4 earnings exhibit alone because it does not provide a full quarterly cash-flow statement for Q4 periods.
