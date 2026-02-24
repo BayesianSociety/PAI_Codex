@@ -162,3 +162,51 @@ How to confirm it worked:
 - Check output file: `ls -la Research/VRTX_financials_*.md`
 - Check session transcript: `MEMORY/SESSIONS/<session_id>/transcript.jsonl`
 - Check strict skill confirmations: `MEMORY/STATE/skills-used.jsonl`
+
+
+
+check if skill has been used:
+ tail -n 50 /home/postnl/PAI_Codex/Codex_PAI/MEMORY/STATE/skills-used.jsonl
+## Skill Enforcement (Strict)
+When your prompt explicitly requests a skill (for example, "Use the Research skill workflow"), the wrapper now enforces it.
+
+Behavior:
+1. Detect requested skill from prompt text.
+2. Inject mandatory contract into model prompt.
+3. Require first output line to be exactly:
+   `Running the **<Skill>** workflow in the **<Skill>** skill.`
+4. If missing, auto-retry once with stronger instruction.
+5. If still missing:
+   - `exec` mode exits with failure status
+   - `chat` mode rejects that response and continues
+
+Audit logs:
+- Requested-vs-confirmed contract log:
+  - `MEMORY/STATE/skill-contracts.jsonl`
+- Strict confirmed skill usage log:
+  - `MEMORY/STATE/skills-used.jsonl`
+
+## Test Prompt
+• PROMPT=$(cat <<'EOF'
+  Use the Research skill workflow to analyze VRTX financials.
+
+  Requirements:
+  1) Revenue, operating income, net income trend (last 8 quarters)
+  2) Geographic contribution (US vs international where available)
+  3) Free cash flow trend and key drivers
+  4) Balance sheet health (cash, debt, leases)
+  5) Valuation snapshot (P/E, EV/EBITDA, FCF yield) with caveats
+  6) Top risks and 12-month bull/base/bear scenarios
+
+  Use latest filings and earnings materials.
+  Cite each source with link and date.
+  Save output to Research/VRTX_financials_$(date +%F).md.
+  EOF
+  )
+
+  ./bin/codex-pai exec "$PROMPT" --search --model gpt-5.3-codex
+
+  After it finishes, verify enforcement logs:
+
+  tail -n 5 MEMORY/STATE/skill-contracts.jsonl
+  tail -n 5 MEMORY/STATE/skills-used.jsonl
