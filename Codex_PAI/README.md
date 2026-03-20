@@ -276,6 +276,10 @@ EOF
 
 
 ## CODE REVIEW:
+
+### review
+run codex review
+
 • Findings (highest severity first)
 
   - High: Path traversal in upload API allows writes outside Telos directory via crafted filename.
@@ -323,4 +327,58 @@ EOF
 
 
 
+## To continue this session, run codex resume 019c8f30-0df8-77e0-b6c0-9eaee890f9f2
+
+• Basic usage from the app root:
+
+  cd /home/postnl/PAI_Codex/Codex_PAI
+  codex login
+  ./bin/codex-pai status
+
+  Interactive mode:
+
+  ./bin/codex-pai chat --model gpt-5.3-codex --search
+
+  One-shot prompt:
+
+  ./bin/codex-pai exec \
+    "Summarize the purpose of this repository and save notes to Research/repo_summary.md" \
+    --model gpt-5.3-codex
+
+  Use a skill:
+
+  PROMPT=$(cat <<'EOF'
+  Use the Research skill workflow to analyze AMZN.
+  Return revenue trend, margins, cash flow, debt, risks, and sources.
+  Save to Research/AMZN.md.
+  EOF
+  )
+
+  ./bin/codex-pai exec "$PROMPT" --search --model gpt-5.3-codex
+
+  Use a skill plus enforced template:
+
+  PROMPT=$(cat <<'EOF'
+  Use the Research skill workflow.
+  Template: skills/Research/Templates/MarketResearch.md
+  Analyze VRTX and save to Research/VRTX_template.md.
+  EOF
+  )
+
+  ./bin/codex-pai exec "$PROMPT" --search --model gpt-5.3-codex
+
+  Use an agent wrapper:
+
+  ./bin/agent-codex-researcher \
+    "Use the Research skill workflow to investigate GILD and save to Research/GILD.md" \
+    --search --model gpt-5.3-codex
+
+  Check logs after a run:
+
+  tail -n 5 MEMORY/STATE/skill-contracts.jsonl
+  tail -n 5 MEMORY/STATE/skills-used.jsonl
+  tail -n 5 MEMORY/STATE/agents-used.jsonl
+  tail -n 5 MEMORY/STATE/template-contracts.jsonl
+  
+  
 ## To continue this session, run codex resume 019c8f30-0df8-77e0-b6c0-9eaee890f9f2
